@@ -1,0 +1,21 @@
+# Бинарники
+server
+cli
+*.exe
+*.dll
+*.so
+*.dylib
+bin/
+
+# Вывод тестов
+*.test
+*.out
+coverage.html
+coverage.out
+
+# Системные файлы
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
