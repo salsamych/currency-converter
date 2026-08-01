@@ -9,7 +9,7 @@ import (
 )
 
 func TestCacheSetAndGet(t *testing.T) {
-	c := cache.NewCache(100 * time.Millisecond)
+	c := cache.NewCache(3 * time.Millisecond)
 
 	rates := &provider.Rate{
 		Date: time.Now(),
@@ -32,7 +32,7 @@ func TestCacheSetAndGet(t *testing.T) {
 	}
 
 	// Ждём истечения TTL
-	time.Sleep(150 * time.Millisecond)
+	time.Sleep(3 * time.Millisecond)
 
 	// Кеш должен быть снова пустым
 	if got := c.Get(); got != nil {
