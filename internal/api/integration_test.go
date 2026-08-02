@@ -13,10 +13,23 @@ import (
 	"currency-converter/internal/provider"
 )
 
+type mockProvider struct{}
+
+func (m *mockProvider) FetchRates() (*provider.Rate, error) {
+	return &provider.Rate{
+		Date: time.Now(),
+		Rates: map[string]provider.CurrencyRate{
+			"USD": {CharCode: "USD", Nominal: 1, Value: 90.0},
+			"EUR": {CharCode: "EUR", Nominal: 1, Value: 100.0},
+			"RUB": {CharCode: "RUB", Nominal: 1, Value: 1.0},
+		},
+	}, nil
+}
+
 func TestIntegrationConvertEndpoint(t *testing.T) {
-	realProvider := provider.NewCBRProvider()
+	mock := &mockProvider{}
 	cache := cache.NewCache(10 * time.Minute)
-	conv := converter.NewConverter(realProvider, cache)
+	conv := converter.NewConverter(mock, cache)
 	handler := api.NewHandler(conv)
 
 	server := httptest.NewServer(http.HandlerFunc(handler.Convert))
@@ -63,9 +76,9 @@ func TestIntegrationConvertEndpoint(t *testing.T) {
 }
 
 func TestIntegrationCurrenciesEndpoint(t *testing.T) {
-	realProvider := provider.NewCBRProvider()
+	mock := &mockProvider{}
 	cache := cache.NewCache(10 * time.Minute)
-	conv := converter.NewConverter(realProvider, cache)
+	conv := converter.NewConverter(mock, cache)
 	handler := api.NewHandler(conv)
 
 	server := httptest.NewServer(http.HandlerFunc(handler.Currencies))
