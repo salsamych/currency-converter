@@ -19,7 +19,7 @@ func main() {
 	}
 
 	rateProvider := provider.NewCBRProvider()
-	ratesCache := cache.NewCache(10 * time.Minute)
+	ratesCache := cache.NewCache(24 * time.Hour)
 	conv := converter.NewConverter(rateProvider, ratesCache)
 	handler := api.NewHandler(conv)
 	server := api.NewServer(addr, handler)
